@@ -1,0 +1,49 @@
+:root {
+    --square-size: 100px;
+    --marker-size: calc((var(--square-size)*.9));
+}
+body {
+    display: grid;
+}
+
+.boardContainer {
+    display: none;
+}
+
+#gameboard {
+    display: grid;
+    grid-template-columns: repeat(3, var(--square-size));
+    grid-template-rows: repeat(3, var(--square-size));
+    height: 300px;
+    width: 300px;  
+    text-align: center;
+    justify-content: center;
+    align-content: center;
+    justify-self: center;
+}
+
+.square {
+    display: grid;
+    background-color: white;
+    align-items: center;
+    font-size: var(--marker-size);
+    border: 2px solid black;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.square:first-child,
+.square:nth-child(2),
+.square:nth-child(3) {
+    border-top: none;
+}
+.square:nth-child(3n+1) {
+    border-left: none;
+}
+.square:nth-child(3n+3) {
+    border-right: none;
+} 
+.square:last-child,
+.square:nth-child(8),
+.square:nth-child(7) {
+    border-bottom: none;
+}
