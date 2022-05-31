@@ -6,8 +6,27 @@ body {
     display: grid;
 }
 
-.boardContainer {
+.addPlayer{
+    position: absolute;
+    left:40%;
+    top: 45%;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+}
+
+#playerUno{
+    
+}
+
+#playerDos{
     display: none;
+}
+
+#boardContainer {
+    display: none;
+    justify-self: center;
+    align-self: center;
 }
 
 #gameboard {

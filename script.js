@@ -1,16 +1,60 @@
+const Player = (name, marker) => {
+    const getName = () =>  name;
+    const getMarker = () =>  marker;
+    let getPlayerInfo = () => {
+        console.log("Player "+number +"'s name is "+ name+" and their marker is "+marker+ ".");
+    };
+    return {getMarker, getName};
+}
+
+let players = [];
+
+const createPlayerOne = () => {
+    let playerOne = document.getElementById("player1").value;
+    if (playerOne != "") {
+        const first = Player(playerOne, "X");
+        players.push(first);
+        document.getElementById("playerUno").style.display = "none";
+        document.getElementById("playerDos").style.display = "grid";
+        return {first};
+    } else {
+        alert("Must input a name.");
+    }
+};
+
+const createPlayerTwo = () => {
+    let playerTwo = document.getElementById("player2").value;
+    if (playerTwo != "") {
+        let second = Player(playerTwo, "O");
+        players.push(second);
+        document.getElementById("playerDos").style.display = "none";
+        gameBoardModule.displayBoard();
+        return {second};
+    }
+}
+
 const gameBoardModule = function() {
-    const gameBoard = ["","O","","","","O","","",""];
+    const gameBoard = ["","","","","","","","",""];
     let boxes = document.querySelectorAll(".square");
     printBoard();
     for (let i=0; i<boxes.length; i++) {
         boxes[i].addEventListener("click", function(){placeMarker(i);});
     }
-
+    
+    let currentPlayer = "X";
+    
+    const switchPlayer = () => {
+        if (currentPlayer === players[1].getMarker()){
+            currentPlayer = players[0].getMarker();
+        } else {
+            currentPlayer = players[1].getMarker();
+        }
+    }
     function placeMarker(i) {
         if (gameBoard[i] === ""){
-            gameBoard[i] = "X";
+            gameBoard[i] = currentPlayer;
         } else {
-
+            alert("Space taken, try again.");
         }
         console.log("working");
         printBoard();
@@ -21,8 +65,6 @@ const gameBoardModule = function() {
             boxes[i].textContent = gameBoard[i];
         }
     }
-    console.log("this is working");
-
     function checkWin(){
         if (gameBoard[0] === "X" && gameBoard [1] === "X" && gameBoard[2] === "X" ||
             gameBoard[0] === "X" && gameBoard [3] === "X" && gameBoard[6] === "X" ||
@@ -32,25 +74,27 @@ const gameBoardModule = function() {
             gameBoard[6] === "X" && gameBoard [7] === "X" && gameBoard[8] === "X" ||
             gameBoard[0] === "X" && gameBoard [4] === "X" && gameBoard[8] === "X" ||
             gameBoard[2] === "X" && gameBoard [4] === "X" && gameBoard[6] === "X" ){
-                alert("Winner is X!");
+                alert(players[0].getName() +" is the winner!");
                 console.log("winner");
+            } else if (
+            gameBoard[0] === "O" && gameBoard [1] === "O" && gameBoard[2] === "O" ||
+            gameBoard[0] === "O" && gameBoard [3] === "O" && gameBoard[6] === "O" ||
+            gameBoard[1] === "O" && gameBoard [4] === "O" && gameBoard[7] === "O" ||
+            gameBoard[2] === "O" && gameBoard [5] === "O" && gameBoard[8] === "O" ||
+            gameBoard[3] === "O" && gameBoard [4] === "O" && gameBoard[5] === "O" ||
+            gameBoard[6] === "O" && gameBoard [7] === "O" && gameBoard[8] === "O" ||
+            gameBoard[0] === "O" && gameBoard [4] === "O" && gameBoard[8] === "O" ||
+            gameBoard[2] === "O" && gameBoard [4] === "O" && gameBoard[6] === "O" ){
+                alert(players[1].getName() +" is the winner!");
+                console.log("winner");
+            } else if (gameBoard.includes("") === false){
+                alert("Tie!")
+            } else {
+                switchPlayer();
             };
     }
-}()
-
-let createPlayer = (name, number, marker) => {
-    let getPlayerInfo = () => {
-        console.log("Player "+number +"'s name is "+ name+" and their marker is "+marker+ ".")
+    function displayBoard() {
+        document.getElementById("boardContainer").style.display="grid";
     };
-}
-
-const playGame = function(){
-    let playerCreator = function(){
-        let player1 = document.getElementById("player1");
-        let player2 = document.getElementById("player2");
-        let firstPlayer = createPlayer(player1.value, 1, "X");
-        let secondPlayer = createPlayer(player2.value, 2, "O");
-    }
-    return {playerCreator}
-}
-
+    return {displayBoard};
+}()

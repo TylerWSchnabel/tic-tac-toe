@@ -10,15 +10,19 @@
 </head>
 <body>
     <div class="player-maker">
-        <form id="playerCreation">
-            <p>Player 1</p>
+        <form class="addPlayer" id="playerUno">
+            <p>Player 1 - X</p>
             <input type="text" id="player1">
-            <p>Player 2</p>
+            
+            <button type="button" onclick="createPlayerOne()">Add Player</button>
+        </form>
+        <form class="addPlayer" id="playerDos">
+            <p>Player 2 - O</p>
             <input type="text" id="player2">
-            <button type="button" onclick="playGame.playerCreator">Start Game</button>
+            <button type="button" onclick="createPlayerTwo()">Start Game</button>
         </form>
     </div>
-    <div class="boardContainer">
+    <div id="boardContainer">
         <div id="gameboard">
             <div class="square"></div>
             <div class="square"></div>
