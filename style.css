@@ -2,25 +2,73 @@
     --square-size: 100px;
     --marker-size: calc((var(--square-size)*.9));
 }
+
+@font-face {
+    font-family: scoreboard;
+    src: url(files/advanced-led-board-7.regular.ttf);
+}
+html {
+    display: grid;
+    align-self: center;
+    background-color: rgb(234, 234, 234);
+    height: 100%;
+}
 body {
     display: grid;
+    grid-template-rows: 1fr 3fr;
+    background-color: white;
+    width: 60%;
+    height: 100%;
+    justify-self: center;
+    margin: 0%;
 }
 
 .addPlayer{
     position: absolute;
-    left:40%;
-    top: 45%;
+    left: 30%;
+    top: 30%;
     display: grid;
     justify-content: center;
     align-content: center;
+    background-color: aquamarine;
+    height: 40%;
+    width: 40%;
+    font-family: scoreboard;
+    font-size: 30px;
+    font-weight: bold;
+    border-radius: 20px;
+    border: 3px solid black;
+    box-shadow: 0 0 10px black;
 }
-
-#playerUno{
-    
+.addInput {
+    margin-bottom: 10px;
+    border-radius: 10px;
+    height: 2em;
+    font-family: scoreboard;
+    font-size: large;
+    font-weight: bold;
 }
 
 #playerDos{
     display: none;
+}
+.playerTwoBtns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+#scoreboard {
+    display: none;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    text-align: center;
+    background-color: black;
+    color: rgb(250, 223, 70);
+    box-shadow: 0 0 10px black ;
+    font-family: scoreboard;
+    padding-top: 5px;
+    font-size: 35px;
 }
 
 #boardContainer {
@@ -29,6 +77,10 @@ body {
     align-self: center;
 }
 
+#turn {
+    font-family: scoreboard;
+    font-size: 30px;
+}
 #gameboard {
     display: grid;
     grid-template-columns: repeat(3, var(--square-size));
@@ -39,6 +91,17 @@ body {
     justify-content: center;
     align-content: center;
     justify-self: center;
+    margin-bottom: 50px;
+}
+
+.boardBtns {
+    justify-self: center;
+    width: 200px;
+    padding: 5px;
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    font-size: x-large;
 }
 
 .square {
@@ -65,4 +128,38 @@ body {
 .square:nth-child(8),
 .square:nth-child(7) {
     border-bottom: none;
+}
+
+#winner {
+    position: absolute;
+    left: 30%;
+    top: 15%;
+    display: none;
+    grid-template-rows: 1fr 1fr 1fr;
+    background-color: aquamarine;
+    height: 30%;
+    width: 40%;
+    font-family: scoreboard;
+    font-size: 30px;
+    font-weight: bold;
+    border-radius: 20px;
+    border: 3px solid black;
+    text-align: center;
+    padding-bottom: 10px;
+    box-shadow: 0 0 10px black;
+}
+
+.btns {
+    justify-self: center;
+    width: 30%;
+    padding: 5px;
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    font-size: large;
+    margin-top: 10px;
+}
+
+.namebtns {
+    width: 100%;
 }

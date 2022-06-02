@@ -6,23 +6,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="script.js" defer></script>
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <title>Tyler's Tic-Tac-Toe</title>
 </head>
 <body>
-    <div class="player-maker">
-        <form class="addPlayer" id="playerUno">
-            <p>Player 1 - X</p>
-            <input type="text" id="player1">
-            
-            <button type="button" onclick="createPlayerOne()">Add Player</button>
-        </form>
-        <form class="addPlayer" id="playerDos">
-            <p>Player 2 - O</p>
-            <input type="text" id="player2">
-            <button type="button" onclick="createPlayerTwo()">Start Game</button>
-        </form>
+    <form class="addPlayer" id="playerUno">
+        <p class="addLabel">Player 1 - X</p>
+        <input type="text" id="player1" class="addInput">
+        <button type="button" class="btns namebtns" onclick="createPlayerOne()">Add Player 1</button>
+    </form>
+    <form class="addPlayer" id="playerDos">
+        <p class="addLabel">Player 2 - O</p>
+        <input type="text" id="player2" class="addInput">
+        <div class="playerTwoBtns">
+            <button type="button" class="btns namebtns" onclick="createPlayerTwo()">Add Player 2</button>
+            <button type="button" class="btns namebtns" onclick="gameBoardModule.playComputer()">Play the Computer</button>
+        </div>
+    </form>
+    <div id="scoreboard">
+        <div id="oneBoard">
+            <p id="playerOneName"></p>
+            <p id="oneScore"></p>
+        </div>
+        <div id="twoBoard">
+            <p id="playerTwoName"></p>
+            <p id="twoScore"></p>
+        </div>
     </div>
     <div id="boardContainer">
+        <p id="turn"></p>
         <div id="gameboard">
             <div class="square"></div>
             <div class="square"></div>
@@ -33,6 +44,20 @@
             <div class="square"></div>
             <div class="square"></div>
             <div class="square"></div>
+        </div>
+        <div id="buttons">
+            <button type="button" class="boardBtns" onclick="gameBoardModule.samePlayers()">Restart Game</button>
+            <button type="button" class="boardBtns" onclick="window.location.reload()">New Players</button>
+        </div>
+    </div>
+    
+    <div id="winner">
+        <p class="winner-copy" id="winner-message">Tyler is the Winner!</p>
+        <p class="winner-copy"id="play-again">Play Again?</p>
+        <div id="replay-btns">
+            <button type="button" class="btns" id="play-again" onclick="gameBoardModule.samePlayers()">Same Players</button>
+            <button type="button" class="btns" id="reset" onclick="window.location.reload()">New Players</button>
+            <button type="button" class="btns" id="end" onclick=window.open("https://www.wikihow.com/Win-at-Tic-Tac-Toe")>Study first</button>
         </div>
     </div>
 </body>
