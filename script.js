@@ -37,7 +37,7 @@ const createPlayerTwo = () => {
 const gameBoardModule = function() {
     let gameBoard = ["","","","","","","","",""];
     let boxes = document.querySelectorAll(".square");
-    printBoard();
+    _printBoard();
     for (let i=0; i<boxes.length; i++) {
         boxes[i].addEventListener("click", function(){placeMarker(i);});
     }
@@ -56,10 +56,9 @@ const gameBoardModule = function() {
     
     let currentPlayer = "X";
 
-    function comuterPlay() {
+    function computerPlay() {
         let played = false;
         while (played === false){
-            console.log("searching");
             let space = Math.floor(Math.random() * 9);
             if (gameBoard[space] === ""){
                 placeMarker(space);
@@ -68,7 +67,7 @@ const gameBoardModule = function() {
             }
     }
     
-    const switchPlayer = () => {
+    const _switchPlayer = () => {
         let turn = document.getElementById("turn");
         if (gameBoard.includes("") === true){
             if (currentPlayer === players[1].getMarker()){
@@ -78,7 +77,7 @@ const gameBoardModule = function() {
                 currentPlayer = players[1].getMarker();
                 turn.textContent = players[1].getName() + "'s turn"
                 if (compOpp === true) {
-                    comuterPlay();
+                    setTimeout(computerPlay, 250);
                     }
                 }
             }
@@ -88,20 +87,25 @@ const gameBoardModule = function() {
         if (gameOn === true){
             if (gameBoard[i] === ""){
                 gameBoard[i] = currentPlayer;
-                printBoard();
-                checkWin();
-                switchPlayer();
+                _printBoard();
+                _checkWin();
+                _switchPlayer();
             } else {
                 alert("Space taken, try again.");
             }
         }
     }
-    function printBoard(){
+    function _printBoard(){
         for (let i =0; i<gameBoard.length; i++){
             boxes[i].textContent = gameBoard[i];
         }
     }
-    function checkWin(){
+
+
+
+
+    
+    function _checkWin(){
         let winner = document.getElementById("winner");
         let winnerMessage = document.getElementById("winner-message");
         if (gameBoard[0] === "X" && gameBoard [1] === "X" && gameBoard[2] === "X" ||
@@ -152,7 +156,7 @@ const gameBoardModule = function() {
 
     function samePlayers() {
         gameBoard = gameBoard = ["","","","","","","","",""];
-        printBoard();
+        _printBoard();
         gameOn = true;
         winner.style.display = "none";
         currentPlayer = players[0].getMarker();
