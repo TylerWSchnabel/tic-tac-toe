@@ -68,7 +68,7 @@ const gameBoardModule = function() {
                 console.log(currentPlayer);
                 gameBoard[i] = currentPlayer.getMarker();
                 _printBoard();
-                _checkWin(gameBoard);
+                _checkWin(gameBoard, currentPlayer);
                 _switchPlayer();
             } else {
                 alert("Space taken, try again.");
@@ -83,23 +83,23 @@ const gameBoardModule = function() {
 
 
     
-    function _checkWin(board){
+    function _checkWin(board, player){
         let champ;
         let winner = document.getElementById("winner");
         let winnerMessage = document.getElementById("winner-message");
 
-        if (board[0] == currentPlayer.getMarker() && board [1] == currentPlayer.getMarker() && board[2] == currentPlayer.getMarker() ||
-            board[0] == currentPlayer.getMarker() && board [3] == currentPlayer.getMarker() && board[6] == currentPlayer.getMarker() ||
-            board[1] == currentPlayer.getMarker() && board [4] == currentPlayer.getMarker() && board[7] == currentPlayer.getMarker() ||
-            board[2] == currentPlayer.getMarker() && board [5] == currentPlayer.getMarker() && board[8] == currentPlayer.getMarker() ||
-            board[3] == currentPlayer.getMarker() && board [4] == currentPlayer.getMarker() && board[5] == currentPlayer.getMarker() ||
-            board[6] == currentPlayer.getMarker() && board [7] == currentPlayer.getMarker() && board[8] == currentPlayer.getMarker() ||
-            board[0] == currentPlayer.getMarker() && board [4] == currentPlayer.getMarker() && board[8] == currentPlayer.getMarker() ||
-            board[2] == currentPlayer.getMarker() && board [4] == currentPlayer.getMarker() && board[6] == currentPlayer.getMarker() ){
+        if (board[0] == player.getMarker() && board [1] == player.getMarker() && board[2] == player.getMarker() ||
+            board[0] == player.getMarker() && board [3] == player.getMarker() && board[6] == player.getMarker() ||
+            board[1] == player.getMarker() && board [4] == player.getMarker() && board[7] == player.getMarker() ||
+            board[2] == player.getMarker() && board [5] == player.getMarker() && board[8] == player.getMarker() ||
+            board[3] == player.getMarker() && board [4] == player.getMarker() && board[5] == player.getMarker() ||
+            board[6] == player.getMarker() && board [7] == player.getMarker() && board[8] == player.getMarker() ||
+            board[0] == player.getMarker() && board [4] == player.getMarker() && board[8] == player.getMarker() ||
+            board[2] == player.getMarker() && board [4] == player.getMarker() && board[6] == player.getMarker() ){
                 winnerMessage.textContent = currentPlayer.getName()+ " is the Winner!";
-                champ = currentPlayer;
+                champ = player;
                 winner.style.display = "grid";
-                currentPlayer.score= currentPlayer.score + 1;
+                player.score= player.score + 1;
                 displayScoreboard();
                 gameOn = false;
             } else if (gameBoard.includes("") === false){
@@ -131,7 +131,7 @@ const gameBoardModule = function() {
     }
     console.log("pee");
     
-    return {displayBoard, samePlayers, displayScoreboard, playComputer, currentPlayer, setCurrentPlayer};
+    return {displayBoard, samePlayers, displayScoreboard, playComputer, currentPlayer, setCurrentPlayer,getEmptyField, gameBoard};
 }()
 
 
