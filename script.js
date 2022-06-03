@@ -1,38 +1,4 @@
-const Player = (name, marker, score) => {
-    const getName = () =>  name;
-    const getMarker = () =>  marker;
-    
-    let getPlayerInfo = () => {
-        console.log("Player "+number +"'s name is "+ name+" and their marker is "+marker+ ".");
-    };
-    return {getMarker, getName, score};
-}
 
-let players = [];
-
-const createPlayerOne = () => {
-    let playerOne = document.getElementById("player1").value;
-    if (playerOne != "") {
-        const first = Player(playerOne, "X", 0);
-        players.push(first);
-        document.getElementById("playerUno").style.display = "none";
-        document.getElementById("playerDos").style.display = "grid";
-    } else {
-        alert("Must input a name.");
-    }
-};
-
-const createPlayerTwo = () => {
-    let playerTwo = document.getElementById("player2").value;
-    if (playerTwo != "") {
-        let second = Player(playerTwo, "O", 0);
-        players.push(second);
-        document.getElementById("playerDos").style.display = "none";
-        gameBoardModule.displayBoard();
-        gameBoardModule.displayScoreboard();
-        turn.textContent = players[0].getName() + "'s turn";
-    }
-}
 
 const gameBoardModule = function() {
     let gameBoard = ["","","","","","","","",""];
@@ -51,7 +17,6 @@ const gameBoardModule = function() {
         }
         return empty;
     }
-
     var compOpp = false
 
     const playComputer = () => {
@@ -63,8 +28,11 @@ const gameBoardModule = function() {
         turn.textContent = players[0].getName() + "'s turn";
         compOpp = true
     }
-    
-    let currentPlayer = "X";
+    let currentPlayer= "";
+
+    function setCurrentPlayer(player){
+        currentPlayer = player;
+    }
 
     function computerPlay() {
         let played = false;
@@ -80,11 +48,11 @@ const gameBoardModule = function() {
     const _switchPlayer = () => {
         let turn = document.getElementById("turn");
         if (gameBoard.includes("") === true){
-            if (currentPlayer === players[1].getMarker()){
-                currentPlayer = players[0].getMarker();
+            if (currentPlayer === players[1]){
+                currentPlayer = players[0];
                 turn.textContent = players[0].getName() + "'s turn"
             } else {
-                currentPlayer = players[1].getMarker();
+                currentPlayer = players[1];
                 turn.textContent = players[1].getName() + "'s turn"
                 if (compOpp === true) {
                     setTimeout(computerPlay, 250);
@@ -94,9 +62,11 @@ const gameBoardModule = function() {
         }
     let gameOn = true
     function placeMarker(i) {
+        console.log(currentPlayer);
         if (gameOn === true){
             if (gameBoard[i] === ""){
-                gameBoard[i] = currentPlayer;
+                console.log(currentPlayer);
+                gameBoard[i] = currentPlayer.getMarker();
                 _printBoard();
                 _checkWin(gameBoard);
                 _switchPlayer();
@@ -117,33 +87,19 @@ const gameBoardModule = function() {
         let champ;
         let winner = document.getElementById("winner");
         let winnerMessage = document.getElementById("winner-message");
-        if (board[0] === "X" && board [1] === "X" && board[2] === "X" ||
-            board[0] === "X" && board [3] === "X" && board[6] === "X" ||
-            board[1] === "X" && board [4] === "X" && board[7] === "X" ||
-            board[2] === "X" && board [5] === "X" && board[8] === "X" ||
-            board[3] === "X" && board [4] === "X" && board[5] === "X" ||
-            board[6] === "X" && board [7] === "X" && board[8] === "X" ||
-            board[0] === "X" && board [4] === "X" && board[8] === "X" ||
-            board[2] === "X" && board [4] === "X" && board[6] === "X" ){
-                winnerMessage.textContent = players[0].getName()+ " is the Winner!";
-                champ = players[0];
+
+        if (board[0] == currentPlayer.getMarker() && board [1] == currentPlayer.getMarker() && board[2] == currentPlayer.getMarker() ||
+            board[0] == currentPlayer.getMarker() && board [3] == currentPlayer.getMarker() && board[6] == currentPlayer.getMarker() ||
+            board[1] == currentPlayer.getMarker() && board [4] == currentPlayer.getMarker() && board[7] == currentPlayer.getMarker() ||
+            board[2] == currentPlayer.getMarker() && board [5] == currentPlayer.getMarker() && board[8] == currentPlayer.getMarker() ||
+            board[3] == currentPlayer.getMarker() && board [4] == currentPlayer.getMarker() && board[5] == currentPlayer.getMarker() ||
+            board[6] == currentPlayer.getMarker() && board [7] == currentPlayer.getMarker() && board[8] == currentPlayer.getMarker() ||
+            board[0] == currentPlayer.getMarker() && board [4] == currentPlayer.getMarker() && board[8] == currentPlayer.getMarker() ||
+            board[2] == currentPlayer.getMarker() && board [4] == currentPlayer.getMarker() && board[6] == currentPlayer.getMarker() ){
+                winnerMessage.textContent = currentPlayer.getName()+ " is the Winner!";
+                champ = currentPlayer;
                 winner.style.display = "grid";
-                players[0].score= players[0].score + 1;
-                displayScoreboard();
-                gameOn = false;
-            } else if (
-            board[0] === "O" && board[1] === "O" && board[2] === "O" ||
-            board[0] === "O" && board[3] === "O" && board[6] === "O" ||
-            board[1] === "O" && board[4] === "O" && board[7] === "O" ||
-            board[2] === "O" && board[5] === "O" && board[8] === "O" ||
-            board[3] === "O" && board[4] === "O" && board[5] === "O" ||
-            board[6] === "O" && board[7] === "O" && board[8] === "O" ||
-            board[0] === "O" && board[4] === "O" && board[8] === "O" ||
-            board[2] === "O" && board[4] === "O" && board[6] === "O" ){
-                winnerMessage.textContent = players[1].getName()+ " is the Winner!";
-                champ = players[1];
-                winner.style.display = "grid";
-                players[1].score = players[1].score + 1;
+                currentPlayer.score= currentPlayer.score + 1;
                 displayScoreboard();
                 gameOn = false;
             } else if (gameBoard.includes("") === false){
@@ -170,9 +126,51 @@ const gameBoardModule = function() {
         _printBoard();
         gameOn = true;
         winner.style.display = "none";
-        currentPlayer = players[0].getMarker();
+        currentPlayer = players[0];
         turn.textContent = players[0].getName() + "'s turn"
     }
+    console.log("pee");
     
-    return {displayBoard, samePlayers, displayScoreboard, playComputer};
+    return {displayBoard, samePlayers, displayScoreboard, playComputer, currentPlayer, setCurrentPlayer};
 }()
+
+
+const Player = (name, marker, score) => {
+    const getName = () =>  name;
+    const getMarker = () =>  marker;
+    
+    let getPlayerInfo = () => {
+        console.log("Player "+number +"'s name is "+ name+" and their marker is "+marker+ ".");
+    };
+    return {getMarker, getName, score};
+}
+
+let players = [];
+
+const createPlayerOne = () => {
+    let playerOne = document.getElementById("player1").value;
+    if (playerOne != "") {
+        const first = Player(playerOne, "X", 0);
+        players.push(first);
+        document.getElementById("playerUno").style.display = "none";
+        document.getElementById("playerDos").style.display = "grid";
+    } else {
+        alert("Must input a name.");
+    }
+    gameBoardModule.setCurrentPlayer(players[0]);
+    ;
+};
+
+const createPlayerTwo = () => {
+
+    let playerTwo = document.getElementById("player2").value;
+    if (playerTwo != "") {
+        let second = Player(playerTwo, "O", 0);
+        players.push(second);
+        document.getElementById("playerDos").style.display = "none";
+        gameBoardModule.displayBoard();
+        gameBoardModule.displayScoreboard();
+        turn.textContent = players[0].getName() + "'s turn";
+        console.log("poop");
+    }
+}
