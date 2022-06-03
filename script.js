@@ -42,6 +42,16 @@ const gameBoardModule = function() {
         boxes[i].addEventListener("click", function(){placeMarker(i);});
     }
 
+    function getEmptyField(board){
+        var empty = []
+        for (let i=0; i<board.length; i++){
+            if (board[i] === ""){
+                empty.push(i);
+            }
+        }
+        return empty;
+    }
+
     var compOpp = false
 
     const playComputer = () => {
@@ -88,7 +98,7 @@ const gameBoardModule = function() {
             if (gameBoard[i] === ""){
                 gameBoard[i] = currentPlayer;
                 _printBoard();
-                _checkWin();
+                _checkWin(gameBoard);
                 _switchPlayer();
             } else {
                 alert("Space taken, try again.");
@@ -102,35 +112,36 @@ const gameBoardModule = function() {
     }
 
 
-
-
     
-    function _checkWin(){
+    function _checkWin(board){
+        let champ;
         let winner = document.getElementById("winner");
         let winnerMessage = document.getElementById("winner-message");
-        if (gameBoard[0] === "X" && gameBoard [1] === "X" && gameBoard[2] === "X" ||
-            gameBoard[0] === "X" && gameBoard [3] === "X" && gameBoard[6] === "X" ||
-            gameBoard[1] === "X" && gameBoard [4] === "X" && gameBoard[7] === "X" ||
-            gameBoard[2] === "X" && gameBoard [5] === "X" && gameBoard[8] === "X" ||
-            gameBoard[3] === "X" && gameBoard [4] === "X" && gameBoard[5] === "X" ||
-            gameBoard[6] === "X" && gameBoard [7] === "X" && gameBoard[8] === "X" ||
-            gameBoard[0] === "X" && gameBoard [4] === "X" && gameBoard[8] === "X" ||
-            gameBoard[2] === "X" && gameBoard [4] === "X" && gameBoard[6] === "X" ){
+        if (board[0] === "X" && board [1] === "X" && board[2] === "X" ||
+            board[0] === "X" && board [3] === "X" && board[6] === "X" ||
+            board[1] === "X" && board [4] === "X" && board[7] === "X" ||
+            board[2] === "X" && board [5] === "X" && board[8] === "X" ||
+            board[3] === "X" && board [4] === "X" && board[5] === "X" ||
+            board[6] === "X" && board [7] === "X" && board[8] === "X" ||
+            board[0] === "X" && board [4] === "X" && board[8] === "X" ||
+            board[2] === "X" && board [4] === "X" && board[6] === "X" ){
                 winnerMessage.textContent = players[0].getName()+ " is the Winner!";
+                champ = players[0];
                 winner.style.display = "grid";
                 players[0].score= players[0].score + 1;
                 displayScoreboard();
                 gameOn = false;
             } else if (
-            gameBoard[0] === "O" && gameBoard [1] === "O" && gameBoard[2] === "O" ||
-            gameBoard[0] === "O" && gameBoard [3] === "O" && gameBoard[6] === "O" ||
-            gameBoard[1] === "O" && gameBoard [4] === "O" && gameBoard[7] === "O" ||
-            gameBoard[2] === "O" && gameBoard [5] === "O" && gameBoard[8] === "O" ||
-            gameBoard[3] === "O" && gameBoard [4] === "O" && gameBoard[5] === "O" ||
-            gameBoard[6] === "O" && gameBoard [7] === "O" && gameBoard[8] === "O" ||
-            gameBoard[0] === "O" && gameBoard [4] === "O" && gameBoard[8] === "O" ||
-            gameBoard[2] === "O" && gameBoard [4] === "O" && gameBoard[6] === "O" ){
+            board[0] === "O" && board[1] === "O" && board[2] === "O" ||
+            board[0] === "O" && board[3] === "O" && board[6] === "O" ||
+            board[1] === "O" && board[4] === "O" && board[7] === "O" ||
+            board[2] === "O" && board[5] === "O" && board[8] === "O" ||
+            board[3] === "O" && board[4] === "O" && board[5] === "O" ||
+            board[6] === "O" && board[7] === "O" && board[8] === "O" ||
+            board[0] === "O" && board[4] === "O" && board[8] === "O" ||
+            board[2] === "O" && board[4] === "O" && board[6] === "O" ){
                 winnerMessage.textContent = players[1].getName()+ " is the Winner!";
+                champ = players[1];
                 winner.style.display = "grid";
                 players[1].score = players[1].score + 1;
                 displayScoreboard();
@@ -160,7 +171,7 @@ const gameBoardModule = function() {
         gameOn = true;
         winner.style.display = "none";
         currentPlayer = players[0].getMarker();
-        turn.textContent = players[0].getName() + "'s turn."
+        turn.textContent = players[0].getName() + "'s turn"
     }
     
     return {displayBoard, samePlayers, displayScoreboard, playComputer};
