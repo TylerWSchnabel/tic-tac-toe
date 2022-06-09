@@ -26,21 +26,32 @@ const gameBoardModule = function() {
         gameBoardModule.displayBoard();
         gameBoardModule.displayScoreboard();
         turn.textContent = players[0].getName() + "'s turn";
+        gameBoardModule.setCurrentPlayer(players[0], players[1]);
         compOpp = true
     }
-    let currentPlayer= "";
+    let currentPlayer = "";
+    let offPlayer = ""
 
-    function setCurrentPlayer(player){
+    function setCurrentPlayer(player, notPlayer){
         currentPlayer = player;
+        offPlayer  = notPlayer;
     }
-
+    let ai = 100;
     function computerPlay() {
+        let percent = Math.floor(Math.random() * 101);
         let played = false;
         while (played === false){
-            let space = Math.floor(Math.random() * 9);
-            if (gameBoard[space] === ""){
-                placeMarker(space);
-                played = true;
+           if (percent < ai){
+                bestMove();
+                played=true;
+                console.log('best move');
+            } else {
+                let space = Math.floor(Math.random() * 9);
+                if (gameBoard[space] === ""){
+                    placeMarker(space);
+                    played = true;
+                    console.log('random');
+                    }
                 }
             }
     }
@@ -50,9 +61,11 @@ const gameBoardModule = function() {
         if (gameBoard.includes("") === true){
             if (currentPlayer === players[1]){
                 currentPlayer = players[0];
+                offPlayer = players[1];
                 turn.textContent = players[0].getName() + "'s turn"
             } else {
                 currentPlayer = players[1];
+                offPlayer = players[0];
                 turn.textContent = players[1].getName() + "'s turn"
                 if (compOpp === true) {
                     setTimeout(computerPlay, 250);
@@ -62,14 +75,13 @@ const gameBoardModule = function() {
         }
     let gameOn = true
     function placeMarker(i) {
-        console.log(currentPlayer);
         if (gameOn === true){
             if (gameBoard[i] === ""){
-                console.log(currentPlayer);
                 gameBoard[i] = currentPlayer.getMarker();
                 _printBoard();
-                _checkWin(gameBoard, currentPlayer);
+                _endGame();
                 _switchPlayer();
+                return gameBoard;
             } else {
                 alert("Space taken, try again.");
             }
@@ -79,15 +91,34 @@ const gameBoardModule = function() {
         for (let i =0; i<gameBoard.length; i++){
             boxes[i].textContent = gameBoard[i];
         }
+        console.log(getEmptyField(gameBoard));
     }
 
-
-    
-    function _checkWin(board, player){
-        let champ;
+    function _checkTie(board) {
         let winner = document.getElementById("winner");
         let winnerMessage = document.getElementById("winner-message");
+        if (getEmptyField(board).length === 0) {
+            winnerMessage.textContent = "Tie!"
+            winner.style.display = "grid";
+            gameOn = false;
+        }
+    }
 
+    function _endGame (){
+        let winner = document.getElementById("winner");
+        let winnerMessage = document.getElementById("winner-message");
+        if (_checkWin(gameBoard, currentPlayer)){
+            winnerMessage.textContent = currentPlayer.getName()+ " is the Winner!";
+            winner.style.display = "grid";
+            currentPlayer.score = currentPlayer.score + 1;
+            displayScoreboard();
+            gameOn = false;
+        } else {
+            _checkTie(gameBoard);
+        }
+    }
+    
+    function _checkWin(board, player){
         if (board[0] == player.getMarker() && board [1] == player.getMarker() && board[2] == player.getMarker() ||
             board[0] == player.getMarker() && board [3] == player.getMarker() && board[6] == player.getMarker() ||
             board[1] == player.getMarker() && board [4] == player.getMarker() && board[7] == player.getMarker() ||
@@ -96,17 +127,11 @@ const gameBoardModule = function() {
             board[6] == player.getMarker() && board [7] == player.getMarker() && board[8] == player.getMarker() ||
             board[0] == player.getMarker() && board [4] == player.getMarker() && board[8] == player.getMarker() ||
             board[2] == player.getMarker() && board [4] == player.getMarker() && board[6] == player.getMarker() ){
-                winnerMessage.textContent = currentPlayer.getName()+ " is the Winner!";
-                champ = player;
-                winner.style.display = "grid";
-                player.score= player.score + 1;
-                displayScoreboard();
-                gameOn = false;
-            } else if (gameBoard.includes("") === false){
-                winnerMessage.textContent = "Tie!"
-                winner.style.display = "grid";
-                gameOn = false;
+                return true;
+            } else {
+                return false;
             }
+        
     }
 
     function displayBoard() {
@@ -122,16 +147,72 @@ const gameBoardModule = function() {
     }
 
     function samePlayers() {
-        gameBoard = gameBoard = ["","","","","","","","",""];
+        gameBoard = ["","","","","","","","",""];
         _printBoard();
         gameOn = true;
         winner.style.display = "none";
         currentPlayer = players[0];
+        offPlayer = players[1];
         turn.textContent = players[0].getName() + "'s turn"
     }
-    console.log("pee");
+
+    function bestMove(){
+        let bestScore = -1000;
+        let move;
+        for (let i=0; i < gameBoard.length; i++){
+            if (gameBoard[i] === ""){
+                gameBoard[i] = players[1].getMarker();
+                let minScore = minimax(gameBoard, 0, false);
+                console.log(i + " --- " + minScore);
+                gameBoard[i] = ""
+               if (minScore > bestScore) {
+                   bestScore = minScore;
+                   move = {i};
+               }
+            }
+        }
+        placeMarker(move.i);
+    }
     
-    return {displayBoard, samePlayers, displayScoreboard, playComputer, currentPlayer, setCurrentPlayer,getEmptyField, gameBoard};
+    function minimax (newBoard, depth, maxing){
+        let avail = getEmptyField(newBoard);
+        if (_checkWin(newBoard, players[1]) === true) {
+            return  10;
+        } else if (_checkWin(newBoard, players[0]) === true){
+            return  -10;
+        } else if (avail.length === 0){
+            return  0;
+        }
+
+        if (maxing) {
+            let bestScore = -1000;
+            for (let i= 0; i < newBoard.length; i++){
+                if (newBoard[i] == ""){
+                    newBoard[i] = players[1].getMarker();
+                    let minScore = minimax(newBoard, depth +1, false);
+                    //console.log(newBoard + "  -  " + minScore + "  -  " + depth);
+                    newBoard[i] = "";
+                    bestScore = Math.max(minScore, bestScore);
+                }
+            }
+            return bestScore;
+        } else {
+            let bestScore = 1000;
+            for (let i= 0; i<newBoard.length; i++){
+                if (newBoard[i] == ""){
+                    newBoard[i] = players[0].getMarker();
+                    let minScore = minimax(newBoard, depth +1, true);
+                    //console.log( "mining  " + i + "  --  " + minScore);
+                    newBoard[i] = "";
+                    bestScore = Math.min(minScore, bestScore);
+                }
+            }
+            return bestScore;
+        }
+
+    }
+    
+    return {displayBoard, samePlayers, displayScoreboard, playComputer, currentPlayer, setCurrentPlayer,getEmptyField, gameBoard, getEmptyField, minimax};
 }()
 
 
@@ -157,7 +238,7 @@ const createPlayerOne = () => {
     } else {
         alert("Must input a name.");
     }
-    gameBoardModule.setCurrentPlayer(players[0]);
+    
     ;
 };
 
@@ -171,6 +252,7 @@ const createPlayerTwo = () => {
         gameBoardModule.displayBoard();
         gameBoardModule.displayScoreboard();
         turn.textContent = players[0].getName() + "'s turn";
+        gameBoardModule.setCurrentPlayer(players[0], players[1]);
         console.log("poop");
     }
 }
