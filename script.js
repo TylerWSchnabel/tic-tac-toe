@@ -36,10 +36,29 @@ const gameBoardModule = function() {
         currentPlayer = player;
         offPlayer  = notPlayer;
     }
-    let ai = 100;
+    
+    function setAI(){
+        let level = document.getElementById('compAI');
+        let ai;
+        if (level.value === "easy"){
+            ai = 0;
+        } else if (level.value === "medium"){
+            ai = 50;
+        } else if (level.value === "hard"){
+            ai = 90;
+        } else if (level.value === "impossible"){
+            ai = 100;
+        }
+        return ai;
+    }
+    
+    
+    
+    
     function computerPlay() {
         let percent = Math.floor(Math.random() * 101);
         let played = false;
+        let ai  = setAI();
         while (played === false){
            if (percent < ai){
                 bestMove();
@@ -192,7 +211,7 @@ const gameBoardModule = function() {
                     let minScore = minimax(newBoard, depth +1, false);
                     //console.log(newBoard + "  -  " + minScore + "  -  " + depth);
                     newBoard[i] = "";
-                    bestScore = Math.max(minScore, bestScore);
+                    bestScore = Math.max(minScore - depth, bestScore);
                 }
             }
             return bestScore;
@@ -204,7 +223,7 @@ const gameBoardModule = function() {
                     let minScore = minimax(newBoard, depth +1, true);
                     //console.log( "mining  " + i + "  --  " + minScore);
                     newBoard[i] = "";
-                    bestScore = Math.min(minScore, bestScore);
+                    bestScore = Math.min(minScore + depth, bestScore);
                 }
             }
             return bestScore;

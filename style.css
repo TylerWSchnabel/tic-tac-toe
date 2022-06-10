@@ -72,10 +72,20 @@ body {
     font-size: 35px;
 }
 
+#upperBoard{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    font-family: scoreboard;
+    gap: 200px;
+
+}
+
 #boardContainer {
     display: none;
     justify-self: center;
     align-self: center;
+    text-align: center;
 }
 
 #turn {

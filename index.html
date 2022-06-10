@@ -33,7 +33,18 @@
         </div>
     </div>
     <div id="boardContainer">
-        <p id="turn"></p>
+        <div id="upperBoard">
+            <p id="turn"></p>
+            <div id="compLev">
+                <label for="compAI">Choose Difficulty Level</label>
+                <select id="compAI" name="compAI" onchange="gameBoardModule.samePlayers()">
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                    <option value="impossible">Impossible</option>
+                </select>
+            </div>
+        </div>
         <div id="gameboard">
             <div class="square"></div>
             <div class="square"></div>
