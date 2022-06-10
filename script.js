@@ -20,6 +20,7 @@ const gameBoardModule = function() {
     var compOpp = false
 
     const playComputer = () => {
+        let compLev = document.getElementById('compLev');
         let computer = Player("Computer", "O", 0);
         players.push(computer);
         document.getElementById("playerDos").style.display = "none";
@@ -27,6 +28,7 @@ const gameBoardModule = function() {
         gameBoardModule.displayScoreboard();
         turn.textContent = players[0].getName() + "'s turn";
         gameBoardModule.setCurrentPlayer(players[0], players[1]);
+        compLev.style.display = "block";
         compOpp = true
     }
     let currentPlayer = "";

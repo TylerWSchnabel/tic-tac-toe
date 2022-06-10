@@ -81,6 +81,10 @@ body {
 
 }
 
+#compLev {
+    display: none;
+}
+
 #boardContainer {
     display: none;
     justify-self: center;
