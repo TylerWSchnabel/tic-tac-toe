@@ -39,15 +39,17 @@ body {
     border-radius: 20px;
     border: 3px solid black;
     box-shadow: 0 0 10px black;
+    justify-items: center;
 }
 .addInput {
     margin-bottom: 10px;
     border-radius: 10px;
     height: 2em;
-    width: 20em;
+    width: 80%;
     font-family: scoreboard;
     font-size: large;
     font-weight: bold;
+    justify-self: center;
 }
 
 #playerDos{
@@ -152,7 +154,7 @@ body {
     display: none;
     grid-template-rows: 1fr 1fr 1fr;
     background-color: aquamarine;
-    height: 30%;
+    height: auto;
     width: 40%;
     font-family: scoreboard;
     font-size: 30px;
@@ -178,3 +180,22 @@ body {
 .namebtns {
     width: 100%;
 }
+
+
+@media only screen and (max-width: 600px) {
+
+    body {
+        width: 100vw;
+    }
+    .addPlayer{
+        width: 90vw;
+        left: 5vw;
+    }
+
+    #winner {
+        width: 90vw;
+        left: 5vw;
+        height: auto;
+    }
+
+} 
